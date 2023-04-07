@@ -2,11 +2,19 @@ import axios from 'axios';
 
 const BASE_URL = 'https://www.pre-onboarding-selection-task.shop/';
 
-
 const fetchCreate = (url, query, data) => {
-    axios.post(url, { headers: { "Content-Type": "application/json" } }, { body: data })
-        .then((res) => { console.log(query === 'signin' ? res.status : res); })
+    fetch(url, {
+        method: `POST`,
+        headers: { "Content-Type": `application/json` },
+        body: JSON.stringify(data),
+    })
+        .then((res) => {
+            if (query === 'signin') localStorage.setItem('access_token', res.body['access_token']);
+            else console.log(res);
+        })
         .catch((error) => console.log(error))
+    // .then(res => res.json())
+    // .then((res) => { console.log(query === 'signin' ? res.status : res); })
 }
 
 const signClick = (query, emailBind, passwordBind) => {
