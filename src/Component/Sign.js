@@ -1,20 +1,15 @@
-import { useState } from 'react'
+import useInput from './util/useInput';
+import Input from './Input';
 
 function Sign({ path }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const emailBind = useInput();
+    const passwordBind = useInput();
 
     return (
         <div>
             <h2>{path}</h2>
-            <div>
-                <label>email</label>
-                <input data-testid="email-input" value={email} onChange={(e) => { setEmail(e.target.value) }} />
-            </div>
-            <div>
-                <label>password</label>
-                <input data-testid="password-input" value={password} onChange={(e) => { setPassword(e.target.value) }} />
-            </div>
+            <Input label={"email"} value={emailBind} />
+            <Input label={"password"} value={passwordBind} />
             <button data-testid={`${path}-button`} type='submit'>회원가입</button>
         </div>
     )
