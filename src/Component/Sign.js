@@ -3,6 +3,15 @@ import styled from 'styled-components'
 
 import { signClick } from './util/api'
 import Input from './Input';
+import { useLocation } from 'react-router';
+
+const queryMatch = (path) => {
+    const isSignUp = path === '/signup'
+    const query = isSignUp ? 'signup' : 'signin';
+    const buttonClass = isSignUp ? "signup-button" : "signin-button";
+
+    return { query, buttonClass };
+}
 
 const SignStyle = styled.form`
     display: flex;
@@ -34,21 +43,25 @@ const SignStyle = styled.form`
 
 `
 
-function Sign({ path }) {
+function Sign() {
     const emailBind = useInput();
     const passwordBind = useInput();
 
+    const location = useLocation();
+    const path = location.pathname;
+    const { query, buttonClass } = queryMatch(path);
+
     const onSubmit = (e) => {
         e.preventDefault();
-        signClick(path, emailBind, passwordBind)
+        signClick(query, emailBind, passwordBind)
     }
 
     return (
         <SignStyle onSubmit={onSubmit}>
-            <h2>{path}</h2>
+            <h2>{query}</h2>
             <Input label={"email"} value={emailBind} />
             <Input label={"password"} value={passwordBind} />
-            <button data-testid={`${path}-button`} type='submit'>회원가입</button>
+            <button data-testid={buttonClass} type='submit'>회원가입</button>
         </SignStyle>
     )
 }
