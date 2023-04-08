@@ -84,6 +84,9 @@ const onClickModify = (modifyData, navigate) => {
     updateTodo(data, idx, navigate)
 }
 
+// Delete
+
+
 // Sign
 const fetchCreate = (url, query, data, navigate) => {
     const fetchHeader = {

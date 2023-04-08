@@ -1,12 +1,11 @@
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 
-import useInput from './util/useInput';
-import styled from 'styled-components'
+import useInput from '../util/useInput';
+import { signClick } from '../util/api'
 
-import Input from './Input';
-import { signClick } from './util/api'
-
+import Input from '../element/Input';
+import SignStyle from './StyleComponent/SignStyle';
 
 
 const queryMatch = (path) => {
@@ -17,37 +16,6 @@ const queryMatch = (path) => {
 
     return { query, buttonClass, buttonText };
 }
-
-const SignStyle = styled.form`
-    display: flex;
-    flex-direction: column;
-
-    width: 40%;
-    height: 60%;
-    padding: 3%;
-    border: solid 0.1em black;
-    border-radius: 5%;
-
-    justify-content: center;
-
-    .valueInput {
-       display: flex;
-       justify-content: space-between;
-       margin-bottom: 5%;
-    }
-
-    input {
-        height: 100%;
-        background: none;
-        border-width: 0.1em;
-    }
-
-    input:focus {
-        outline: none;
-    }
-
-`
-
 
 function Sign() {
     // const [disabled, setDisabled] = useState('disabled');

@@ -3,8 +3,8 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthnticated } from './Component/util/api';
 
-const Todo = lazy(() => import('./Component/Todo'))
-const Sign = lazy(() => import('./Component/Sign'))
+const Todo = lazy(() => import('./Component/Page/Todo'))
+const Sign = lazy(() => import('./Component/Page/Sign'))
 
 const path = (path, authnticated) => {
   return (
