@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { signClick } from './util/api'
 import Input from './Input';
 import { useLocation } from 'react-router';
+import { useState } from 'react';
 
 const queryMatch = (path) => {
     const isSignUp = path === '/signup'
@@ -44,8 +45,15 @@ const SignStyle = styled.form`
 `
 
 function Sign() {
-    const emailBind = useInput();
-    const passwordBind = useInput();
+    // const [disabled, setDisabled] = useState('disabled');
+
+    // console.log(emailBind.isdisabled);
+    // console.log(passwordBind.isdisabled);
+
+    // (emailBind.isDisabled || passwordBind.isDisabled) ? setDisabled('disabled') : null    // else setDisabled('');
+
+    const emailBind = useInput('email');
+    const passwordBind = useInput('paasword');
 
     const location = useLocation();
     const path = location.pathname;
@@ -61,7 +69,7 @@ function Sign() {
             <h2>{query}</h2>
             <Input label={"email"} value={emailBind} />
             <Input label={"password"} value={passwordBind} />
-            <button data-testid={buttonClass} type='submit'>회원가입</button>
+            <button data-testid={buttonClass} type='submit' disabled={''}>회원가입</button>
         </SignStyle>
     )
 }
