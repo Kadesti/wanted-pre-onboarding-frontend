@@ -1,6 +1,21 @@
 import axios from 'axios';
 
 const BASE_URL = 'https://www.pre-onboarding-selection-task.shop/';
+const access_token = localStorage.getItem('access_token');
+
+const createTodo = (url, data) => {
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+        .then(res => console.log(res))
+    // .then((res) => { [, res.body] })
+}
 
 const fetchCreate = (url, query, data) => {
     fetch(url, {
@@ -8,16 +23,14 @@ const fetchCreate = (url, query, data) => {
         headers: { "Content-Type": `application/json` },
         body: JSON.stringify(data),
     })
+        .then(res => res.json())
         .then((res) => {
-            if (query === 'signin') localStorage.setItem('access_token', res.body['access_token']);
-            else console.log(res);
+            if (query === 'signin') localStorage.setItem('access_token', res.access_token);
+            else console.log(res.status);
         })
-        .catch((error) => console.log(error))
-    // .then(res => res.json())
-    // .then((res) => { console.log(query === 'signin' ? res.status : res); })
 }
 
-const signClick = (query, emailBind, passwordBind) => {
+const signClick = (query, emailBind, passwordBind, setDisabled) => {
     const email = emailBind.value;
     const password = passwordBind.value;
 
