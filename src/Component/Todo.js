@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import dummyData from '../data/dummydata'
 import styled from 'styled-components'
 
-import { createTodo } from './util/api'
+import { sumbmitTodo, getTodo } from './util/api'
+
+import TodoItem from './TodoItem';
 
 const TodoStyle = styled.form`
     display: flex;
@@ -65,86 +67,28 @@ const TodoStyle = styled.form`
 
 `
 
-const ModifyButton = ({ testid, modifyBind }) => {
-    const { currentIdx, ismodify, setIsModify } = modifyBind;
-
-    let buttonText = '';
-    if (testid === "submit-button") buttonText = "제출";
-    if (testid === "cancel-button") buttonText = "취소";
-    if (testid === "modify-button") buttonText = "수정";
-
-    const setModify = testid === "modify-button" ? true : false;
-    return (
-        <button data-testid={testid} type='submit' onClick={() => {
-            const newArr = [...ismodify]
-            newArr[currentIdx] = setModify;
-            setIsModify(newArr)
-        }}>{buttonText}</button>
-    )
-}
-
-const TodoItem = ({ item, ismodify, setIsModify }) => {
-    const [checked, isChecked] = useState(item.isCompleted)
-
-    const currentIdx = item.id - 1;
-    const modifyBind = { currentIdx, ismodify, setIsModify };
-
-    return (
-        <li>
-            <label className='todo-item'>
-                <input type="checkbox" checked={checked} onChange={() => { isChecked(!checked) }} />
-                {
-                    ismodify[currentIdx]
-                        ? (
-                            <>
-                                <input data-testid="modify-input" />
-                                <ModifyButton testid={"submit-button"} modifyBind={modifyBind} />
-                                <ModifyButton testid={"cancel-button"} modifyBind={modifyBind} />
-                            </>
-                        )
-                        : (
-                            <>
-                                <span>{item.todo}</span>
-                                <ModifyButton testid={"modify-button"} modifyBind={modifyBind} />
-                                <button data-testid="delete-button">삭제</button>
-                            </>
-                        )
-                }
-            </label>
-        </li>
-
-    )
-}
-
-const sumbmitTodo = (e, newTodo, setNewTodo) => {
-    e.preventDefault();
-
-    const data = {
-        // idx 생략
-        todo: newTodo,
-        isCompleted: false,
-        userId: 1
-    }
-    createTodo(data)
-    setNewTodo('');
-}
-
 const Todo = () => {
     const [ismodify, setIsModify] = useState([...dummyData].fill(false));
+    const [todoList, setTodoList] = useState([])
+
     const modifyBind = { ismodify, setIsModify }
 
     const [newTodo, setNewTodo] = useState('')
 
+    useEffect(() => {
+        getTodo(setTodoList)
+    }, [])
 
+    // console.log('todoList: ', todoList);
     return (
         <TodoStyle>
             <div className='new-todo'>
                 <input data-testid="new-todo-input" value={newTodo} onChange={(e) => { setNewTodo(e.target.value) }} />
-                <button data-testid="new-todo-add-button" onClick={(e) => (sumbmitTodo(e, newTodo, setNewTodo))}>추가</button>
+                <button data-testid="new-todo-add-button" onClick={() => (sumbmitTodo(newTodo, setNewTodo))}>추가</button>
             </div>
 
             <ul>
-                {dummyData.map((item) => <TodoItem item={item} {...modifyBind} key={item.id} />)}
+                {todoList.map((item) => <TodoItem item={item} {...modifyBind} key={item.id} />)}
             </ul>
         </TodoStyle >
     )

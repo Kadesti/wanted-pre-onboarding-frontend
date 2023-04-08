@@ -6,8 +6,6 @@ import { useAuthnticated } from './Component/util/api';
 const Todo = lazy(() => import('./Component/Todo'))
 const Sign = lazy(() => import('./Component/Sign'))
 
-
-
 const path = (path, authnticated) => {
   return (
     authnticated
