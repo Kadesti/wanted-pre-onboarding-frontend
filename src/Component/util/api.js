@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const BASE_URL = 'https://www.pre-onboarding-selection-task.shop';
 const access_token = localStorage.getItem('access_token');
@@ -55,9 +54,7 @@ const getTodo = (setTodoList) => {
 }
 
 // Update
-const updateTodo = (data, idx, navigate) => {
-    console.log('data: ', data);
-
+const updateTodo = (data, idx) => {
     fetch(`${BASE_URL}/todos/${idx}`, {
         method: "PUT",
         headers: {
@@ -68,24 +65,32 @@ const updateTodo = (data, idx, navigate) => {
     })
         .then(res => res.json())
         .then(res => console.log(res))
-        .then(navigate("/todo"))
 }
 
-const onClickModify = (modifyData, navigate) => {
+const onClickModify = (modifyData) => {
     const { checked, newValue } = modifyData
     const idx = modifyData["item.id"]
-    console.log(idx);
 
     const data = {
         todo: newValue,
         isCompleted: checked
     }
 
-    updateTodo(data, idx, navigate)
+    updateTodo(data, idx)
 }
 
 // Delete
+const deleteTodo = (idx) => {
+    fetch(`${BASE_URL}/todos/${idx}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${access_token}`
+        }
+    })
+        .then(res => console.log(res.status))
+}
 
+const deleteClick = (id) => deleteTodo(id)
 
 // Sign
 const fetchCreate = (url, query, data, navigate) => {
@@ -128,4 +133,4 @@ const signClick = (query, emailBind, passwordBind, navigate, setDisabled) => {
     // = 조건문이 false
 }
 
-export { signClick, useAuthnticated, sumbmitTodo, getTodo, onClickModify }
+export { useAuthnticated, sumbmitTodo, getTodo, onClickModify, deleteClick, signClick }

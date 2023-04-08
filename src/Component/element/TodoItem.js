@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import ModifyButton from './ModifyButton';
+import { deleteClick } from '../util/api';
 
 const TodoItem = ({ item, ismodify, setIsModify }) => {
     const [checked, isChecked] = useState(item.isCompleted)
-    const [newValue, setNewValue] = useState('')
-    // console.log('modifyData: ', modifyData);
-    const modifyData = { checked, newValue, "item.id": item.id };
 
     const currentIdx = item.id - 1;
+    const [newValue, setNewValue] = useState(item.todo)
+
+    const modifyData = { checked, newValue, "item.id": item.id };
+
     const modifyBind = { currentIdx, ismodify, setIsModify };
 
     return (
@@ -18,7 +20,7 @@ const TodoItem = ({ item, ismodify, setIsModify }) => {
                     ismodify[currentIdx]
                         ? (
                             <>
-                                <input data-testid="modify-input" value={newValue} onChange={(e) => setNewValue(e.target.value)} />
+                                <input data-testid="modify-input" value={newValue} onChange={(e) => { setNewValue(e.target.value) }} />
                                 <ModifyButton testid={"submit-button"} modifyBind={modifyBind} modifyData={modifyData} />
                                 <ModifyButton testid={"cancel-button"} modifyBind={modifyBind} />
                             </>
@@ -27,7 +29,7 @@ const TodoItem = ({ item, ismodify, setIsModify }) => {
                             <>
                                 <span>{item.todo}</span>
                                 <ModifyButton testid={"modify-button"} modifyBind={modifyBind} />
-                                <button data-testid="delete-button">삭제</button>
+                                <button data-testid="delete-button" type='submit' onClick={(e) => { deleteClick(item.id) }}>삭제</button>
                             </>
                         )
                 }
