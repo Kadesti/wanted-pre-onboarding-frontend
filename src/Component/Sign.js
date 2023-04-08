@@ -1,10 +1,11 @@
+import { useLocation } from 'react-router';
+
 import useInput from './util/useInput';
 import styled from 'styled-components'
 
-import { signClick } from './util/api'
 import Input from './Input';
-import { useLocation } from 'react-router';
-import { useState } from 'react';
+import { signClick } from './util/api'
+
 
 const queryMatch = (path) => {
     const isSignUp = path === '/signup'
@@ -43,6 +44,7 @@ const SignStyle = styled.form`
     }
 
 `
+
 
 function Sign() {
     // const [disabled, setDisabled] = useState('disabled');
