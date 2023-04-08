@@ -3,6 +3,8 @@ import { useState } from 'react';
 import dummyData from '../data/dummydata'
 import styled from 'styled-components'
 
+import { createTodo } from './util/api'
+
 const TodoStyle = styled.form`
     display: flex;
     flex-direction: column;
@@ -114,19 +116,31 @@ const TodoItem = ({ item, ismodify, setIsModify }) => {
     )
 }
 
-const onSubmit = (e) => {
+const sumbmitTodo = (e, newTodo, setNewTodo) => {
     e.preventDefault();
+
+    const data = {
+        // idx 생략
+        todo: newTodo,
+        isCompleted: false,
+        userId: 1
+    }
+    createTodo(data)
+    setNewTodo('');
 }
 
 const Todo = () => {
     const [ismodify, setIsModify] = useState([...dummyData].fill(false));
     const modifyBind = { ismodify, setIsModify }
 
+    const [newTodo, setNewTodo] = useState('')
+
+
     return (
-        <TodoStyle onSubmit={onSubmit}>
+        <TodoStyle>
             <div className='new-todo'>
-                <input data-testid="new-todo-input" />
-                <button data-testid="new-todo-add-button" type='submit'>추가</button>
+                <input data-testid="new-todo-input" value={newTodo} onChange={(e) => { setNewTodo(e.target.value) }} />
+                <button data-testid="new-todo-add-button" onClick={(e) => (sumbmitTodo(e, newTodo, setNewTodo))}>추가</button>
             </div>
 
             <ul>
