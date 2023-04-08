@@ -14,8 +14,8 @@ const useAuthnticated = () => {
     return authnticated;
 }
 
-const createTodo = (url, data) => {
-    fetch(url, {
+const createTodo = (data) => {
+    fetch(`${BASE_URL}todos`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -25,14 +25,9 @@ const createTodo = (url, data) => {
     })
         .then(res => res.json())
         .then(res => console.log(res))
-    // .then((res) => { [, res.body] })
 }
 
 const fetchCreate = (url, query, data) => {
-    console.log('url: ', url);
-    console.log('query: ', query);
-    console.log('data: ', data);
-
     const fetchHeader = {
         method: `POST`,
         headers: { "Content-Type": `application/json` },
@@ -65,4 +60,4 @@ const signClick = (query, emailBind, passwordBind, setDisabled) => {
     fetchCreate(`${BASE_URL}auth/${query}`, query, data)
 }
 
-export { signClick, useAuthnticated }
+export { signClick, useAuthnticated, createTodo }
