@@ -30,8 +30,6 @@ const createTodo = (data) => {
 }
 
 const sumbmitTodo = (newTodo, setNewTodo) => {
-    // e.preventDefault();
-
     const data = {
         todo: newTodo,
         isCompleted: false,
@@ -103,9 +101,14 @@ const fetchCreate = (url, query, data, navigate) => {
     if (query === 'signin') {
         fetch(url, fetchHeader)
             .then(res => res.json())
-            .then((res) => { localStorage.setItem('access_token', res.access_token); })
-            .then(navigate("/todo"))
-            .then(console.log('실행'))
+            .then((res) => {
+                console.log('token');
+                localStorage.setItem('access_token', res.access_token);
+            })
+            .then(() => {
+                console.log("/todo");
+                navigate("/todo")
+            })
     }
     else {
         fetch(url, fetchHeader)
@@ -114,12 +117,10 @@ const fetchCreate = (url, query, data, navigate) => {
     }
 }
 
-const signClick = (query, emailBind, passwordBind, navigate, setDisabled) => {
+const signClick = (query, emailBind, passwordBind, navigate) => {
+
     const email = emailBind.value;
     const password = passwordBind.value;
-
-    const testCh = (email, password) => /@/.test(email) && /\w{8,}/.test(password)
-    if (!testCh(email, password)) return;
 
     const data = {
         "email": email,

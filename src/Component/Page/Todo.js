@@ -7,18 +7,15 @@ import TodoStyle from './StyleComponent/TodoStyle';
 
 
 const Todo = () => {
+    const [newTodo, setNewTodo] = useState('')
     const [todoList, setTodoList] = useState([])
 
     const modifyData = todoList.map(el => el.isCompleted)
     const [ismodify, setIsModify] = useState(modifyData);
-
     const modifyBind = { ismodify, setIsModify }
 
-    const [newTodo, setNewTodo] = useState('')
 
-    useEffect(() => {
-        getTodo(setTodoList)
-    }, [])
+    useEffect(() => getTodo(setTodoList), [])
 
     return (
         <TodoStyle>
