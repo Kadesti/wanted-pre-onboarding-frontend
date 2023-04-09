@@ -1,6 +1,7 @@
 # 원티드 프리온보딩 프론트엔드 - 선발 과제 제출
 
-(영상)
+https://user-images.githubusercontent.com/50021232/230776711-ffa0c460-d7e4-4219-aefe-92022827c6ea.mp4
+
 
 ## 프로젝트의 실행 방법
 
