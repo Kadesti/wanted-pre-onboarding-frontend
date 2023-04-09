@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react';
-
 import { sumbmitTodo, getTodo } from '../util/api'
 
 import TodoItem from '../element/TodoItem';
 import TodoStyle from './StyleComponent/TodoStyle';
 
-
 const Todo = () => {
     const [newTodo, setNewTodo] = useState('')
     const [todoList, setTodoList] = useState([])
 
-    const modifyData = todoList.map(el => el.isCompleted)
+    const modifyData = todoList.map(el => el.isCompleted);
     const [ismodify, setIsModify] = useState(modifyData);
     const modifyBind = { ismodify, setIsModify }
-
 
     useEffect(() => getTodo(setTodoList), [])
 

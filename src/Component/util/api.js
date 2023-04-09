@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
+
 
 const BASE_URL = 'https://www.pre-onboarding-selection-task.shop';
 const access_token = localStorage.getItem('access_token');
 
-// 인증
-const useAuthnticated = () => {
-    const [authnticated, setAuthnticated] = useState(null);
+// // 인증
+// const useAuthnticated = () => {
+//     const [authnticated, setAuthnticated] = useState(null);
 
-    useEffect(() => {
-        const loggedUser = localStorage.getItem("access_token");
-        if (loggedUser && loggedUser !== 'undefined') setAuthnticated(loggedUser);
-    }, [])
+//     useEffect(() => {
+//         const loggedUser = localStorage.getItem("access_token");
+//         if (loggedUser && loggedUser !== 'undefined') setAuthnticated(loggedUser);
+//     }, [])
 
-    return authnticated;
-}
+//     return authnticated;
+// }
 
 // Create
 const createTodo = (data) => {
@@ -41,6 +41,8 @@ const sumbmitTodo = (newTodo, setNewTodo) => {
 
 // Read
 const getTodo = (setTodoList) => {
+    const access_token = localStorage.getItem('access_token');
+
     fetch(`${BASE_URL}/todos`, {
         method: "GET",
         headers: {
@@ -91,7 +93,7 @@ const deleteTodo = (idx) => {
 const deleteClick = (id) => deleteTodo(id)
 
 // Sign
-const fetchCreate = (url, query, data, navigate) => {
+const fetchCreate = (url, query, data, navigate, setIsLogin) => {
     const fetchHeader = {
         method: `POST`,
         headers: { "Content-Type": `application/json` },
@@ -102,12 +104,12 @@ const fetchCreate = (url, query, data, navigate) => {
         fetch(url, fetchHeader)
             .then(res => res.json())
             .then((res) => {
-                console.log('token');
+                console.log('1 token');
                 localStorage.setItem('access_token', res.access_token);
             })
             .then(() => {
-                console.log("/todo");
-                navigate("/todo")
+                console.log('2 setIsLogin');
+                setIsLogin(true)
             })
     }
     else {
@@ -117,7 +119,7 @@ const fetchCreate = (url, query, data, navigate) => {
     }
 }
 
-const signClick = (query, emailBind, passwordBind, navigate) => {
+const signClick = (query, emailBind, passwordBind, navigate, setIsLogin) => {
 
     const email = emailBind.value;
     const password = passwordBind.value;
@@ -127,11 +129,11 @@ const signClick = (query, emailBind, passwordBind, navigate) => {
         "password": password
     }
 
-    fetchCreate(`${BASE_URL}/auth/${query}`, query, data, navigate)
+    fetchCreate(`${BASE_URL}/auth/${query}`, query, data, navigate, setIsLogin)
     // navigate("/todo")
 
     // signup 이 중복 시행되었을 떄 signin으로 가지 않도록
     // = 조건문이 false
 }
 
-export { useAuthnticated, sumbmitTodo, getTodo, onClickModify, deleteClick, signClick }
+export { sumbmitTodo, getTodo, onClickModify, deleteClick, signClick }

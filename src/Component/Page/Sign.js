@@ -17,7 +17,7 @@ const queryMatch = (path) => {
     return { query, buttonClass, buttonText };
 }
 
-function Sign() {
+function Sign({ setIsLogin }) {
     const emailBind = useInput('email');
     const passwordBind = useInput('paasword');
 
@@ -34,7 +34,7 @@ function Sign() {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        signClick(query, emailBind, passwordBind, navigate)
+        signClick(query, emailBind, passwordBind, navigate, setIsLogin)
         // if (query === '/signin') navigate("/todo")
     }
 
