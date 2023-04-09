@@ -9,7 +9,6 @@ const TodoItem = ({ item, ismodify, setIsModify }) => {
     const [newValue, setNewValue] = useState(item.todo)
 
     const modifyData = { checked, newValue, "item.id": item.id };
-
     const modifyBind = { currentIdx, ismodify, setIsModify };
 
     return (
