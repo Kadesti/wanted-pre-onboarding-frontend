@@ -18,14 +18,6 @@ const queryMatch = (path) => {
 }
 
 function Sign() {
-    // const [disabled, setDisabled] = useState('disabled');
-
-    // console.log(emailBind.isdisabled);
-    // console.log(passwordBind.isdisabled);
-
-    // (emailBind.isDisabled || passwordBind.isDisabled) ? setDisabled('disabled') : null    // else setDisabled('');
-
-
     const emailBind = useInput('email');
     const passwordBind = useInput('paasword');
 
@@ -33,19 +25,25 @@ function Sign() {
     const path = location.pathname;
     const { query, buttonClass, buttonText } = queryMatch(path);
 
+    let disableState = true
+    if (emailBind.isable === ' ' && passwordBind.isable === ' ') disableState = false
+    else disableState = true
+
     const navigate = useNavigate()
+
     const onSubmit = (e) => {
         e.preventDefault();
-        signClick(query, emailBind, passwordBind, navigate)
-    }
 
+        signClick(query, emailBind, passwordBind, navigate)
+        // if (query === '/signin') navigate("/todo")
+    }
 
     return (
         <SignStyle onSubmit={onSubmit}>
             <h2>{query}</h2>
             <Input label={"email"} value={emailBind} />
             <Input label={"password"} value={passwordBind} />
-            <button data-testid={buttonClass} type='submit' disabled={''}>{buttonText}</button>
+            <button data-testid={buttonClass} type='submit' disabled={disableState}>{buttonText}</button>
         </SignStyle>
     )
 }
