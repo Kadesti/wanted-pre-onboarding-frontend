@@ -10,10 +10,19 @@ const TodoStyle = styled.form`
     border: solid 0.1em black;
     border-radius: 5%;
 
+    justify-content: space-between;
+
     /* background-color: #EEE9DA; */
+
+    .todo-contents {
+        position: relative;
+        overflow-y: scroll;
+    }
 
     .new-todo {
         margin-bottom: 8%;
+        position: sticky;
+        top:20px;
 
         input {
             width: 80%;
@@ -58,6 +67,10 @@ const TodoStyle = styled.form`
         }
     }
 
+    button.logout{
+        height: 10%;
+        border-radius: 10px;
+    }
 `
 
 export default TodoStyle;

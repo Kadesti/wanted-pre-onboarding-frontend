@@ -4,8 +4,10 @@ const Input = ({ label, value }) => {
 
     return (
         <div className='valueInput'>
-            <label>{label}</label>
-            <input data-testid={dataTestId} type={isEmail ? " " : "password"}{...value} />
+            {/* <label>{label}</label> */}
+            <input data-testid={dataTestId} type={isEmail ? " " : "password"}{...value}
+                placeholder={isEmail ? "아이디" : "비밀번호"}
+            />
         </div>
     )
 }

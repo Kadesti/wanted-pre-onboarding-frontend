@@ -9,21 +9,23 @@ const Todo = () => {
     const [todoList, setTodoList] = useState([])
 
     const modifyData = todoList.map(el => el.isCompleted);
-    const [ismodify, setIsModify] = useState(modifyData);
-    const modifyBind = { ismodify, setIsModify }
 
     useEffect(() => getTodo(setTodoList), [])
 
     return (
         <TodoStyle>
-            <div className='new-todo'>
-                <input data-testid="new-todo-input" value={newTodo} onChange={(e) => { setNewTodo(e.target.value) }} />
-                <button data-testid="new-todo-add-button" onClick={() => (sumbmitTodo(newTodo, setNewTodo))}>추가</button>
+            <div className='todo-contents'>
+                <div className='new-todo'>
+                    <input data-testid="new-todo-input" value={newTodo} onChange={(e) => { setNewTodo(e.target.value) }} />
+                    <button data-testid="new-todo-add-button" onClick={() => { sumbmitTodo(newTodo, setNewTodo) }}>추가</button>
+                </div>
+
+                <ul>
+                    {todoList.map((item) => <TodoItem item={item} modifyData={modifyData} key={item.id} />)}
+                </ul>
             </div>
 
-            <ul>
-                {todoList.map((item) => <TodoItem item={item} {...modifyBind} key={item.id} />)}
-            </ul>
+            <button className='logout' type='submit' onClick={() => { localStorage.clear() }}>로그아웃</button>
         </TodoStyle >
     )
 }

@@ -1,19 +1,5 @@
-
-
 const BASE_URL = 'https://www.pre-onboarding-selection-task.shop';
 const access_token = localStorage.getItem('access_token');
-
-// // 인증
-// const useAuthnticated = () => {
-//     const [authnticated, setAuthnticated] = useState(null);
-
-//     useEffect(() => {
-//         const loggedUser = localStorage.getItem("access_token");
-//         if (loggedUser && loggedUser !== 'undefined') setAuthnticated(loggedUser);
-//     }, [])
-
-//     return authnticated;
-// }
 
 // Create
 const createTodo = (data) => {
@@ -39,7 +25,7 @@ const sumbmitTodo = (newTodo, setNewTodo) => {
     setNewTodo('');
 }
 
-// Read
+/** Todo 불러오기 */
 const getTodo = (setTodoList) => {
     const access_token = localStorage.getItem('access_token');
 
@@ -54,8 +40,8 @@ const getTodo = (setTodoList) => {
 }
 
 // Update
-const updateTodo = (data, idx) => {
-    fetch(`${BASE_URL}/todos/${idx}`, {
+const updateTodo = (data, id) => {
+    fetch(`${BASE_URL}/todos/${id}`, {
         method: "PUT",
         headers: {
             "Authorization": `Bearer ${access_token}`,
@@ -68,20 +54,20 @@ const updateTodo = (data, idx) => {
 }
 
 const onClickModify = (modifyData) => {
-    const { checked, newValue } = modifyData
-    const idx = modifyData["item.id"]
+    const { checked, newValue, id } = modifyData
 
+    console.log(checked);
     const data = {
         todo: newValue,
         isCompleted: checked
     }
 
-    updateTodo(data, idx)
+    updateTodo(data, id)
 }
 
-// Delete
-const deleteTodo = (idx) => {
-    fetch(`${BASE_URL}/todos/${idx}`, {
+/** Todo 삭제 요청 */
+const deleteTodo = (id) => {
+    fetch(`${BASE_URL}/todos/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${access_token}`
@@ -90,37 +76,26 @@ const deleteTodo = (idx) => {
         .then(res => console.log(res.status))
 }
 
+/** Todo 삭제 버튼 */
 const deleteClick = (id) => deleteTodo(id)
 
-// Sign
-const fetchCreate = (url, query, data, navigate, setIsLogin) => {
+/** 회원가입 요청 */
+const signUpFetch = (data, navigate) => {
+    const url = `${BASE_URL}/auth/signup`
     const fetchHeader = {
         method: `POST`,
         headers: { "Content-Type": `application/json` },
         body: JSON.stringify(data),
     }
 
-    if (query === 'signin') {
-        fetch(url, fetchHeader)
-            .then(res => res.json())
-            .then((res) => {
-                console.log('1 token');
-                localStorage.setItem('access_token', res.access_token);
-            })
-            .then(() => {
-                console.log('2 setIsLogin');
-                setIsLogin(true)
-            })
-    }
-    else {
-        fetch(url, fetchHeader)
-            .then(res => console.log(res.status))
-            .then(navigate("/signin"))
-    }
+    fetch(url, fetchHeader)
+        .then(res => console.log(res.status))
+        .then(navigate("/signin"))
+
 }
 
-const signClick = (query, emailBind, passwordBind, navigate, setIsLogin) => {
-
+/** 회원가입 클릭 */
+const signupClick = (emailBind, passwordBind, navigate) => {
     const email = emailBind.value;
     const password = passwordBind.value;
 
@@ -129,11 +104,39 @@ const signClick = (query, emailBind, passwordBind, navigate, setIsLogin) => {
         "password": password
     }
 
-    fetchCreate(`${BASE_URL}/auth/${query}`, query, data, navigate, setIsLogin)
-    // navigate("/todo")
-
-    // signup 이 중복 시행되었을 떄 signin으로 가지 않도록
-    // = 조건문이 false
+    signUpFetch(data, navigate)
 }
 
-export { sumbmitTodo, getTodo, onClickModify, deleteClick, signClick }
+/** 로그인 요청  */
+const signInFetch = (data, setIsLogin) => {
+    const url = `${BASE_URL}/auth/signin`
+    const fetchHeader = {
+        method: `POST`,
+        headers: { "Content-Type": `application/json` },
+        body: JSON.stringify(data),
+    }
+
+    fetch(url, fetchHeader)
+        .then(res => res.json())
+        .then((res) => {
+            if (res.access_token !== undefined) {
+                localStorage.setItem('access_token', res.access_token);
+            }
+        })
+        .then(() => { setIsLogin(true) })
+}
+
+/** 로그인 클릭 */
+const signInClick = (emailBind, passwordBind, setIsLogin) => {
+    const email = emailBind.value;
+    const password = passwordBind.value;
+
+    const data = {
+        "email": email,
+        "password": password
+    }
+
+    signInFetch(data, setIsLogin)
+}
+
+export { sumbmitTodo, getTodo, onClickModify, deleteClick, signupClick, signInClick }
